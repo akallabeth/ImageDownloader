@@ -1,10 +1,13 @@
 #!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 URL=$1
-BROWSER=firefox
-JAVA=/usr/lib/jvm/java-8-openjdk/bin/java
-IMAGE_DOWNLOADER=/home/daniel/Projects/ImageDownloader/target/ImageDownloader-0.1.jar
+JAVA=$(which java)
+IMAGE_DOWNLOADER=$DIR/target/ImageDownloader-0.1.jar
 if [ ${URL: -97:1} == "#" ]; then
-	$JAVA -jar $IMAGE_DOWNLOADER $URL | feh -. -
+    TMP=$(mktemp)
+    echo $TMP
+	$JAVA -jar $IMAGE_DOWNLOADER $URL >$TMP
+    xdg-open $TMP
 else
-   $BROWSER $URL
+   xdg-open $URL
 fi
